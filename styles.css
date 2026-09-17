@@ -894,6 +894,138 @@ h1 {
   font-style: italic;
 }
 
+@media (min-width: 900px) and (orientation: landscape) {
+  .app-shell {
+    display: grid;
+    width: min(100%, 1280px);
+    min-height: 100vh;
+    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    padding: 0;
+  }
+
+  .landscape-year-slot {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 20px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
+    background: #17261f;
+    color: #f5ecd5;
+  }
+
+  .landscape-year-slot .year-arrival {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+    margin: 0 0 14px;
+    padding: 0 0 14px;
+    border-bottom: 1px solid rgba(216, 189, 119, 0.45);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .landscape-year-slot .year-arrival strong {
+    font-size: 48px;
+    line-height: 1;
+    text-align: left;
+  }
+
+  .landscape-year-slot .timeline-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+  }
+
+  .landscape-year-slot .year-context:has(.year-arrival:not(.hidden)) .timeline-row .year {
+    display: none;
+  }
+
+  .landscape-year-slot .year {
+    color: #f5ecd5;
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .landscape-year-slot .progress-label {
+    color: rgba(245, 236, 213, 0.7);
+  }
+
+  .landscape-year-slot .phase-label {
+    display: none;
+  }
+
+  .topbar {
+    grid-column: 1;
+    grid-row: 2;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 24px 20px 18px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stats {
+    grid-column: 1;
+    grid-row: 3;
+    align-content: start;
+    grid-template-columns: 1fr;
+    border-right: 1px solid var(--ink);
+    border-bottom: 0;
+  }
+
+  .stats.developer-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat,
+  .stat:first-child {
+    padding: 14px 20px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .start-screen,
+  .game-screen,
+  .newspaper-screen,
+  .ending-screen {
+    grid-column: 2;
+    grid-row: 1 / 4;
+  }
+
+  .start-screen,
+  .ending-screen {
+    padding-right: clamp(32px, 6vw, 80px);
+    padding-left: clamp(32px, 6vw, 80px);
+  }
+
+  .game-screen,
+  .newspaper-screen {
+    margin: 0;
+    padding-right: clamp(24px, 4vw, 48px);
+    padding-left: clamp(24px, 4vw, 48px);
+  }
+
+  .game-screen {
+    padding-top: 18px;
+  }
+
+  .decision-stage,
+  .decision-stage:has(.choice-count-1),
+  .decision-stage:has(.external-document) {
+    min-height: 0;
+    padding-top: 8px;
+  }
+
+}
+
 @media (max-width: 640px) {
   .app-shell {
     padding: 10px 14px 28px;

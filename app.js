@@ -180,6 +180,7 @@ let showDeveloperValues = false;
 
 const elements = {
   stats: document.querySelector("#stats"),
+  landscapeYearSlot: document.querySelector("#landscape-year-slot"),
   startScreen: document.querySelector("#start-screen"),
   gameScreen: document.querySelector("#game-screen"),
   newspaperScreen: document.querySelector("#newspaper-screen"),
@@ -191,6 +192,7 @@ const elements = {
   recordsDialog: document.querySelector("#records-dialog"),
   closeRecords: document.querySelector("#close-records"),
   recordsContent: document.querySelector("#records-content"),
+  yearContext: document.querySelector(".year-context"),
   year: document.querySelector("#year"),
   phaseLabel: document.querySelector("#phase-label"),
   progress: document.querySelector("#progress"),
@@ -704,6 +706,21 @@ function showOnly(section) {
   [elements.startScreen, elements.gameScreen, elements.newspaperScreen, elements.endingScreen]
     .forEach((element) => element.classList.add("hidden"));
   section.classList.remove("hidden");
+  syncYearContextPosition();
+}
+
+const landscapeLayout = window.matchMedia("(min-width: 900px) and (orientation: landscape)");
+
+function syncYearContextPosition() {
+  const useLandscapeLayout = window.innerWidth >= 900 && window.innerWidth > window.innerHeight;
+  if (useLandscapeLayout) {
+    elements.landscapeYearSlot.appendChild(elements.yearContext);
+    elements.landscapeYearSlot.classList.toggle("hidden", elements.gameScreen.classList.contains("hidden"));
+    return;
+  }
+
+  elements.gameScreen.insertBefore(elements.yearContext, elements.decisionStage);
+  elements.landscapeYearSlot.classList.add("hidden");
 }
 
 function phaseFor(year) {
@@ -750,6 +767,7 @@ function renderCard() {
   elements.yearLedger.innerHTML = "";
   elements.year.textContent = card.year;
   elements.phaseLabel.textContent = phaseFor(card.year);
+  elements.phaseLabel.classList.toggle("hidden", !startsNewYear);
   elements.progress.textContent = `本年 ${state.index % 4 + 1} / 4`;
   elements.cardType.textContent = TYPE_NAMES[card.type] || "事件牌";
   elements.cardTitle.textContent = card.title;
@@ -1750,7 +1768,10 @@ elements.closeRecords.addEventListener("click", () => elements.recordsDialog.clo
 elements.recordsDialog.addEventListener("click", (event) => {
   if (event.target === elements.recordsDialog) elements.recordsDialog.close();
 });
+landscapeLayout.addEventListener("change", syncYearContextPosition);
+window.addEventListener("resize", syncYearContextPosition);
 
 state = loadState();
+syncYearContextPosition();
 renderStats();
 if (state) elements.continueButton.classList.remove("hidden");
