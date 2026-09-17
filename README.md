@@ -6,7 +6,7 @@
 
 启用 GitHub Pages 后，在以下地址游玩：
 
-`https://<你的 GitHub 用户名>.github.io/silicon-road/`
+[https://jiashuzhang.github.io/silicon-road/](https://jiashuzhang.github.io/silicon-road/)
 
 ## 本地运行
 
