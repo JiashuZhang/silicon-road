@@ -210,6 +210,8 @@ const elements = {
   impactBody: document.querySelector("#impact-body"),
   impactSettlement: document.querySelector("#impact-settlement"),
   choices: document.querySelector("#choices"),
+  tutorialOverlay: document.querySelector("#tutorial-overlay"),
+  tutorialCopy: document.querySelector("#tutorial-copy"),
   paperDate: document.querySelector("#paper-date"),
   resultMedium: document.querySelector("#result-medium"),
   mediumTitle: document.querySelector("#medium-title"),
@@ -219,7 +221,7 @@ const elements = {
   paperBody: document.querySelector("#paper-body"),
   settlement: document.querySelector("#settlement"),
   recordNote: document.querySelector("#record-note"),
-  nextButton: document.querySelector("#next-button")
+  nextHint: document.querySelector("#next-hint")
 };
 
 function choice(label, effects, headline, result, add = [], remove = [], requires = null, management = null) {
@@ -324,6 +326,7 @@ function newState() {
     checkpoint: null,
     endingType: null,
     annualMode: true,
+    tutorialDismissed: [],
     stateVersion: STATE_VERSION
   };
 }
@@ -694,10 +697,11 @@ function applyEffects(effects) {
 
 function renderStats() {
   const statKeys = showDeveloperValues ? [...VISIBLE_STATS, "reputation"] : VISIBLE_STATS;
+  const isIntro = !elements.startScreen.classList.contains("hidden");
   elements.stats.classList.toggle("developer-stats", showDeveloperValues);
   elements.stats.innerHTML = statKeys.map((key) => {
     const label = STAT_NAMES[key];
-    const value = key === "reputation" ? state?.reputation ?? 50 : state?.stats[key] ?? 50;
+    const value = isIntro ? 50 : key === "reputation" ? state?.reputation ?? 50 : state?.stats[key] ?? 50;
     return `<div class="stat"><span class="stat-label">${label}</span><span class="stat-value ${value <= 20 ? "warning" : ""}">${value}</span></div>`;
   }).join("");
 }
@@ -776,6 +780,7 @@ function renderCard() {
   document.querySelector(".signature-line span").textContent = card.type === "external" ? "阅毕归档" : "董事会批示";
   elements.inlineImpact.classList.add("hidden");
   elements.inlineImpact.querySelector(".external-year-link")?.remove();
+  hideTutorialOverlay();
   elements.choices.innerHTML = "";
   elements.eventCard.className = `event-card${card.type === "external" ? " external-document" : ""}`;
   elements.eventCard.style.transform = "";
@@ -810,6 +815,7 @@ function renderCard() {
   state.view = "card";
   state.pendingResult = null;
   saveState();
+  showTutorialOverlay();
 }
 
 function renderExternalEventInline(cardId, card, selected) {
@@ -861,6 +867,34 @@ function renderExternalEventInline(cardId, card, selected) {
   continueButton.addEventListener("click", nextStep);
   elements.inlineImpact.appendChild(continueButton);
   setupExternalEventSwipe();
+  showTutorialOverlay();
+}
+
+function hideTutorialOverlay() {
+  elements.tutorialOverlay.classList.add("hidden");
+  elements.tutorialOverlay.setAttribute("aria-hidden", "true");
+}
+
+function showTutorialOverlay() {
+  const messages = {
+    0: '<span class="tutorial-directions tutorial-directions-single"><span class="tutorial-action">← <span>向左滑动</span></span></span><span class="tutorial-purpose">翻到下一页</span>',
+    1: '<span class="tutorial-directions"><span class="tutorial-action">← <span>向左滑动</span></span><span class="tutorial-or">或</span><span class="tutorial-action"><span>向右滑动</span> →</span></span><span class="tutorial-purpose">做出决定</span>'
+  };
+  const message = messages[state.index];
+  if (!message || state.tutorialDismissed.includes(state.index)) return;
+  elements.tutorialCopy.innerHTML = message;
+  elements.tutorialOverlay.classList.remove("hidden");
+  elements.tutorialOverlay.setAttribute("aria-hidden", "false");
+  elements.tutorialOverlay.focus();
+}
+
+function dismissTutorialOverlay() {
+  if (elements.tutorialOverlay.classList.contains("hidden")) return;
+  if (!state.tutorialDismissed.includes(state.index)) {
+    state.tutorialDismissed.push(state.index);
+    saveState();
+  }
+  hideTutorialOverlay();
 }
 
 function setupExternalEventSwipe() {
@@ -1081,19 +1115,19 @@ function renderResult() {
     elements.mediumTitle.textContent = isAnnualReport ? `${result.year} 年年报` : "科技工商日报";
     elements.mediumMeta.textContent = isAnnualReport ? "年度经营报告" : "每份 5 分";
     elements.paperSection.textContent = isAnnualReport ? "年度经营 · 状态总览" : isCrisis ? "号外 · 行业危机" : "商业 · 科技";
-    elements.nextButton.textContent = isAnnualReport ? `进入 ${result.year + 1} 年` : "翻到下一页";
+    elements.nextHint.textContent = isAnnualReport ? `← 滑动进入 ${result.year + 1} 年` : "← 滑动翻到下一页";
   } else if (result.year < 1995) {
     elements.resultMedium.className = `newspaper medium-terminal${isAnnualReport ? " annual-report" : ""}`;
     elements.mediumTitle.textContent = isAnnualReport ? `${result.year} 年年报` : "公司信息终端";
     elements.mediumMeta.textContent = isAnnualReport ? "年度经营报告" : "连接正常";
     elements.paperSection.textContent = isAnnualReport ? "年度经营 · 状态总览" : isCrisis ? "紧急系统通告" : "内部新闻数据库";
-    elements.nextButton.textContent = isAnnualReport ? `进入 ${result.year + 1} 年` : "读取下一条";
+    elements.nextHint.textContent = isAnnualReport ? `← 滑动进入 ${result.year + 1} 年` : "← 滑动读取下一条";
   } else {
     elements.resultMedium.className = `newspaper medium-web${isAnnualReport ? " annual-report" : ""}`;
     elements.mediumTitle.textContent = isAnnualReport ? `${result.year} 年年报` : "科技在线";
     elements.mediumMeta.textContent = isAnnualReport ? "年度经营报告" : "56K 在线";
     elements.paperSection.textContent = isAnnualReport ? "年度经营 · 状态总览" : isCrisis ? "突发 · 市场崩盘" : "首页 · 商业科技";
-    elements.nextButton.textContent = isAnnualReport ? `进入 ${result.year + 1} 年` : "下一条消息";
+    elements.nextHint.textContent = isAnnualReport ? `← 滑动进入 ${result.year + 1} 年` : "← 滑动查看下一条消息";
   }
   elements.paperHeadline.textContent = result.headline;
   const varianceNotes = showDeveloperValues ? result.financials?.varianceNotes || [] : [];
@@ -1181,8 +1215,8 @@ function renderResult() {
     elements.recordNote.classList.add("hidden");
   }
 
-  if (["C03", "C06"].includes(result.source)) elements.nextButton.textContent = "查看危机结果";
-  if (result.annualReportPending) elements.nextButton.textContent = `查看 ${result.year} 年年报`;
+  if (["C03", "C06"].includes(result.source)) elements.nextHint.textContent = "← 滑动查看危机结果";
+  if (result.annualReportPending) elements.nextHint.textContent = `← 滑动查看 ${result.year} 年年报`;
   setupResultSwipe();
 }
 
@@ -1732,6 +1766,7 @@ function loadState() {
       return null;
     }
     if (saved && typeof saved.reputation !== "number") saved.reputation = 50;
+    if (saved && !Array.isArray(saved.tutorialDismissed)) saved.tutorialDismissed = [];
     if (saved?.checkpoint && typeof saved.checkpoint.reputation !== "number") saved.checkpoint.reputation = 50;
     const legacyMultipliers = { downturn: 0.5, normal: 1, boom: 1.5 };
     if (saved?.marketCondition?.key && typeof saved.marketCondition.multiplier !== "number") {
@@ -1751,7 +1786,12 @@ function loadState() {
 
 elements.startButton.addEventListener("click", startNewGame);
 elements.continueButton.addEventListener("click", continueGame);
-elements.nextButton.addEventListener("click", nextStep);
+elements.tutorialOverlay.addEventListener("click", dismissTutorialOverlay);
+elements.tutorialOverlay.addEventListener("keydown", (event) => {
+  if (!["Enter", " ", "Escape"].includes(event.key)) return;
+  event.preventDefault();
+  dismissTutorialOverlay();
+});
 elements.debugValuesButton.addEventListener("click", () => {
   showDeveloperValues = !showDeveloperValues;
   elements.debugValuesButton.textContent = `开发者数值：${showDeveloperValues ? "开" : "关"}`;

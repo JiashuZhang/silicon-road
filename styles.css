@@ -210,6 +210,13 @@ h1 {
   line-height: 1.75;
 }
 
+.intro-note {
+  max-width: 590px;
+  margin: -12px 0 24px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 .primary-button {
   min-height: 48px;
   padding: 12px 24px;
@@ -610,6 +617,98 @@ h1 {
   color: var(--red);
 }
 
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(13, 28, 21, 0.86);
+  color: #fff8e8;
+  cursor: pointer;
+  text-align: center;
+  backdrop-filter: blur(3px);
+  animation: tutorial-appear 180ms ease-out;
+}
+
+.tutorial-message {
+  width: min(900px, 100%);
+  padding: 34px 20px;
+  border-top: 1px solid rgba(216, 189, 119, 0.72);
+  border-bottom: 1px solid rgba(216, 189, 119, 0.72);
+}
+
+.tutorial-kicker {
+  margin-bottom: 18px;
+  color: #d8bd77;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tutorial-copy {
+  margin-bottom: 24px;
+  font-family: Georgia, "Songti SC", serif;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.tutorial-directions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 5vw, 64px);
+  font-size: clamp(28px, 4vw, 46px);
+}
+
+.tutorial-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.tutorial-or {
+  color: #d8bd77;
+  font-family: "FangSong", "Songti SC", serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.tutorial-purpose {
+  display: block;
+  margin-top: 16px;
+  color: #d8bd77;
+  font-size: clamp(22px, 2.5vw, 30px);
+}
+
+.tutorial-message small {
+  color: rgba(255, 248, 232, 0.66);
+  font-size: 13px;
+}
+
+@keyframes tutorial-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-overlay {
+    animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .tutorial-directions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tutorial-directions-single {
+    flex-direction: row;
+  }
+}
+
 .newspaper-screen {
   position: relative;
   margin: 0 calc(clamp(18px, 5vw, 56px) * -1) -48px;
@@ -731,9 +830,12 @@ h1 {
   line-height: 1.6;
 }
 
-.newspaper .primary-button {
-  display: block;
-  margin: 18px auto 0;
+.swipe-next-hint {
+  margin: 22px auto 0;
+  color: var(--muted);
+  font-family: "FangSong", "Songti SC", serif;
+  font-size: 16px;
+  text-align: center;
 }
 
 .medium-terminal {

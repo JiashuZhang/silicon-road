@@ -28,7 +28,8 @@
 
     <section id="start-screen" class="start-screen">
       <h2>穿越到1960，<br>你会梭哈半导体吗？</h2>
-      <p class="intro">电脑有一间房那么大，你的公司只有一间房那么小。</p>
+      <p class="intro">你穿越到 1960 年，将用一次次决策，把一间小公司经营成横跨 70 年的硅基帝国。</p>
+      <p class="intro-note">押对技术，改写历史；押错技术，至少能为商学院贡献一个案例。</p>
       <button id="start-button" class="primary-button" type="button">成立公司</button>
       <button id="continue-button" class="text-button hidden" type="button">继续上次进度</button>
     </section>
@@ -81,12 +82,20 @@
         <p id="paper-body" class="paper-body"></p>
         <div id="settlement" class="settlement"></div>
         <div id="record-note" class="record-note hidden"></div>
-        <button id="next-button" class="primary-button dark" type="button">翻到下一页</button>
+        <p id="next-hint" class="swipe-next-hint" aria-hidden="true">← 滑动翻到下一页</p>
       </article>
     </section>
 
     <section id="ending-screen" class="ending-screen hidden" aria-live="polite"></section>
   </main>
+
+  <div id="tutorial-overlay" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorial-copy" aria-hidden="true" tabindex="-1">
+    <div class="tutorial-message">
+      <p class="tutorial-kicker">操作提示</p>
+      <div id="tutorial-copy" class="tutorial-copy"></div>
+      <small>点击任意位置继续</small>
+    </div>
+  </div>
 
   <dialog id="records-dialog" class="records-dialog">
     <div class="dialog-heading">
