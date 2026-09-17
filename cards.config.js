@@ -1607,7 +1607,7 @@
           ),
           choice(
             "为销售团队发奖金",
-            { cash: -5, market: -4, talent: 3, reputation: 2 },
+            { cash: -5, market: +4, talent: 3, reputation: 2 },
             "销售奖金改为团队分配",
             "冠军很生气，团队第一次发现自己也是冠军的一部分。",
             ["teamBonus"],
@@ -1715,7 +1715,7 @@
           ),
           choice(
             "保留全部利润",
-            { cash: 0, tech: 3, market: -2 },
+            { cash: +5, tech: -3, market: -2 },
             "公司继续保留利润",
             "股东被要求相信长期价值，这是一种没有到期日的支付方式。",
             ["retainedEarnings"],
