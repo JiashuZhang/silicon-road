@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f0eadb">
+  <title>硅之路：文字原型</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <header class="topbar" aria-label="公司状态">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">SR</span>
+        <div>
+          <p class="eyebrow">1960—2030</p>
+          <h1>硅之路</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="debug-values-button" class="dev-button" type="button" aria-pressed="false">开发者数值：关</button>
+        <button id="records-button" class="icon-button" type="button" title="查看公司档案" aria-label="查看公司档案">档案</button>
+      </div>
+    </header>
+
+    <section id="stats" class="stats" aria-label="公司数值"></section>
+
+    <section id="start-screen" class="start-screen">
+      <h2>穿越到1960，<br>你会梭哈半导体吗？</h2>
+      <p class="intro">电脑有一间房那么大，你的公司只有一间房那么小。</p>
+      <button id="start-button" class="primary-button" type="button">成立公司</button>
+      <button id="continue-button" class="text-button hidden" type="button">继续上次进度</button>
+    </section>
+
+    <section id="game-screen" class="game-screen hidden" aria-live="polite">
+      <div class="year-context">
+        <div id="year-arrival" class="year-arrival hidden" aria-live="polite">
+          <span>新年度</span>
+          <strong id="arrival-year">1960</strong>
+          <small id="arrival-note">年度计划开始</small>
+          <div id="year-ledger" class="year-ledger hidden"></div>
+        </div>
+        <div class="timeline-row">
+          <span id="year" class="year">1960</span>
+          <span id="phase-label" class="phase-label">机器比办公室大</span>
+          <span id="progress" class="progress-label"></span>
+        </div>
+      </div>
+
+      <div id="decision-stage" class="decision-stage">
+        <article id="event-card" class="event-card">
+          <div class="document-header">
+            <p id="card-type" class="card-type"></p>
+            <span class="document-mark" aria-hidden="true">待决</span>
+          </div>
+          <h2 id="card-title"></h2>
+          <p id="card-body" class="card-body"></p>
+          <section id="inline-impact" class="inline-impact hidden">
+            <p class="impact-label">对公司的影响</p>
+            <h3 id="impact-headline"></h3>
+            <p id="impact-body"></p>
+            <div id="impact-settlement" class="settlement"></div>
+          </section>
+          <div class="signature-line" aria-hidden="true"><span>董事会批示</span></div>
+        </article>
+        <div id="choices" class="choices"></div>
+      </div>
+    </section>
+
+    <section id="newspaper-screen" class="newspaper-screen hidden" aria-live="polite">
+      <article id="result-medium" class="newspaper">
+        <header class="newspaper-masthead">
+          <span id="paper-date"></span>
+          <strong id="medium-title">科技工商日报</strong>
+          <span id="medium-meta">每份 5 分</span>
+        </header>
+        <p id="paper-section" class="paper-section">商业 · 科技</p>
+        <h2 id="paper-headline"></h2>
+        <div class="rule"></div>
+        <p id="paper-body" class="paper-body"></p>
+        <div id="settlement" class="settlement"></div>
+        <div id="record-note" class="record-note hidden"></div>
+        <button id="next-button" class="primary-button dark" type="button">翻到下一页</button>
+      </article>
+    </section>
+
+    <section id="ending-screen" class="ending-screen hidden" aria-live="polite"></section>
+  </main>
+
+  <dialog id="records-dialog" class="records-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">内部文件</p>
+        <h2>公司档案</h2>
+      </div>
+      <button id="close-records" class="icon-button" type="button" aria-label="关闭档案">关闭</button>
+    </div>
+    <div id="records-content"></div>
+  </dialog>
+
+  <script src="cards.config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
