@@ -3,108 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f0eadb">
-  <title>硅之路：文字原型</title>
+  <meta name="theme-color" content="#24352d">
+  <title>硅之路：飞轮危机局</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main id="app" class="app-shell">
-    <div id="landscape-year-slot" class="landscape-year-slot hidden"></div>
-    <header class="topbar" aria-label="公司状态">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">SR</span>
-        <div>
-          <p class="eyebrow">1960—2030</p>
-          <h1>硅之路</h1>
-        </div>
-      </div>
-      <div class="topbar-actions">
-        <button id="debug-values-button" class="dev-button" type="button" aria-pressed="false">开发者数值：关</button>
-        <button id="records-button" class="icon-button" type="button" title="查看公司档案" aria-label="查看公司档案">档案</button>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="硅之路首页">
+        <span class="brand-mark">SR</span>
+        <span><small>1960—1982</small><strong>硅之路</strong></span>
+      </a>
+      <div class="run-meta">
+        <span id="round-label">灰盒测试</span>
+        <button id="records-button" class="quiet-button" type="button">公司档案</button>
       </div>
     </header>
 
-    <section id="stats" class="stats" aria-label="公司数值"></section>
-
-    <section id="start-screen" class="start-screen">
-      <h2>穿越到1960，<br>你会梭哈半导体吗？</h2>
-      <p class="intro">你穿越到 1960 年，将用一次次决策，把一间小公司经营成横跨 70 年的硅基帝国。</p>
-      <p class="intro-note">押对技术，改写历史；押错技术，至少能为商学院贡献一个案例。</p>
-      <button id="start-button" class="primary-button" type="button">成立公司</button>
-      <button id="continue-button" class="text-button hidden" type="button">继续上次进度</button>
+    <section id="hud" class="hud hidden" aria-label="公司状态">
+      <div class="status-bar">
+        <div id="resources" class="resources"></div>
+        <div class="crisis-clock"><small>订单冻结</small><strong id="crisis-countdown">6 回合</strong></div>
+      </div>
+      <div id="engine-panel" class="engine-panel"></div>
+      <div id="ability-slots" class="ability-slots" aria-label="公司能力槽"></div>
     </section>
 
-    <section id="game-screen" class="game-screen hidden" aria-live="polite">
-      <div class="year-context">
-        <div id="year-arrival" class="year-arrival hidden" aria-live="polite">
-          <span>新年度</span>
-          <strong id="arrival-year">1960</strong>
-          <small id="arrival-note">年度计划开始</small>
-          <div id="year-ledger" class="year-ledger hidden"></div>
-        </div>
-        <div class="timeline-row">
-          <span id="year" class="year">1960</span>
-          <span id="phase-label" class="phase-label">机器比办公室大</span>
-          <span id="progress" class="progress-label"></span>
-        </div>
+    <section id="start-screen" class="start-screen">
+      <p class="kicker">7 回合灰盒 · 一次危机 · 没有董事会保险</p>
+      <h1>把公司造出来，<br>再看它怎么死。</h1>
+      <p class="lede">六次经营，组装公司能力，撑过最终危机。</p>
+      <div class="promise-grid">
+        <div><span>01</span><strong>三选一</strong></div>
+        <div><span>02</span><strong>承担代价</strong></div>
+        <div><span>03</span><strong>扛住危机</strong></div>
       </div>
+      <button id="start-button" class="primary-button" type="button">成立公司</button>
+      <button id="continue-button" class="text-button hidden" type="button">继续上次经营</button>
+    </section>
 
-      <div id="decision-stage" class="decision-stage">
-        <article id="event-card" class="event-card">
-          <div class="document-header">
-            <p id="card-type" class="card-type"></p>
-            <span class="document-mark" aria-hidden="true">待决</span>
-          </div>
+    <section id="decision-screen" class="screen hidden" aria-live="polite">
+      <div class="decision-layout">
+        <article id="event-card" class="event-card" tabindex="0" aria-label="决策卡：向左或向右滑动选择">
+          <span id="swipe-left" class="swipe-choice swipe-choice-left"></span>
+          <span id="swipe-right" class="swipe-choice swipe-choice-right"></span>
+          <p id="card-type" class="kicker"></p>
           <h2 id="card-title"></h2>
-          <p id="card-body" class="card-body"></p>
-          <section id="inline-impact" class="inline-impact hidden">
-            <p class="impact-label">对公司的影响</p>
-            <h3 id="impact-headline"></h3>
-            <p id="impact-body"></p>
-            <div id="impact-settlement" class="settlement"></div>
-          </section>
-          <div class="signature-line" aria-hidden="true"><span>董事会批示</span></div>
+          <div id="card-context" class="card-context"></div>
+          <details class="card-story">
+            <summary>查看背景</summary>
+            <p id="card-body" class="card-body"></p>
+          </details>
         </article>
+        <p class="swipe-instruction">拖动卡牌，或选择一侧</p>
         <div id="choices" class="choices"></div>
       </div>
     </section>
 
-    <section id="newspaper-screen" class="newspaper-screen hidden" aria-live="polite">
-      <article id="result-medium" class="newspaper">
-        <header class="newspaper-masthead">
-          <span id="paper-date"></span>
-          <strong id="medium-title">科技工商日报</strong>
-          <span id="medium-meta">每份 5 分</span>
-        </header>
-        <p id="paper-section" class="paper-section">商业 · 科技</p>
-        <h2 id="paper-headline"></h2>
-        <div class="rule"></div>
-        <p id="paper-body" class="paper-body"></p>
-        <div id="settlement" class="settlement"></div>
-        <div id="record-note" class="record-note hidden"></div>
-        <p id="next-hint" class="swipe-next-hint" aria-hidden="true">← 滑动翻到下一页</p>
+    <aside id="result-screen" class="result-toast hidden" aria-live="polite" aria-atomic="true">
+      <button id="next-button" class="result-dismiss" type="button" aria-label="关闭结果">×</button>
+      <article>
+        <p id="result-kicker" class="kicker"></p>
+        <h3 id="result-title"></h3>
+        <div id="result-deltas" class="result-deltas"></div>
+        <div id="result-engine" class="result-engine"></div>
       </article>
+    </aside>
+
+    <section id="replacement-screen" class="screen hidden" aria-live="polite">
+      <header class="screen-heading"><div><p class="kicker">六个位置已经坐满</p><h2>董事会要求腾出一把椅子</h2></div></header>
+      <p id="replacement-copy" class="brief"></p>
+      <div id="replacement-grid" class="replacement-grid"></div>
     </section>
 
-    <section id="ending-screen" class="ending-screen hidden" aria-live="polite"></section>
+    <section id="ending-screen" class="screen hidden" aria-live="polite"></section>
   </main>
 
-  <div id="tutorial-overlay" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorial-copy" aria-hidden="true" tabindex="-1">
-    <div class="tutorial-message">
-      <p class="tutorial-kicker">操作提示</p>
-      <div id="tutorial-copy" class="tutorial-copy"></div>
-      <small>点击任意位置继续</small>
-    </div>
-  </div>
-
   <dialog id="records-dialog" class="records-dialog">
-    <div class="dialog-heading">
-      <div>
-        <p class="eyebrow">内部文件</p>
-        <h2>公司档案</h2>
-      </div>
-      <button id="close-records" class="icon-button" type="button" aria-label="关闭档案">关闭</button>
-    </div>
+    <header><div><p class="kicker">内部文件</p><h2>公司档案</h2></div><button id="close-records" class="quiet-button" type="button">关闭</button></header>
     <div id="records-content"></div>
   </dialog>
 

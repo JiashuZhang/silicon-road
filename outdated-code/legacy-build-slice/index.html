@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f0eadb">
+  <title>硅之路：文字原型</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <div id="landscape-year-slot" class="landscape-year-slot hidden"></div>
+    <header class="topbar" aria-label="公司状态">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">SR</span>
+        <div>
+          <p class="eyebrow">公司经营档案</p>
+          <h1>硅之路</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="debug-values-button" class="dev-button" type="button" aria-pressed="false">开发者数值：关</button>
+        <button id="records-button" class="icon-button" type="button" title="查看公司档案" aria-label="查看公司档案">档案</button>
+      </div>
+    </header>
+
+    <section id="stats" class="stats" aria-label="公司数值"></section>
+
+    <section id="start-screen" class="start-screen">
+      <p class="chapter-label">15 分钟试玩 · 1960—1982</p>
+      <h2>穿越到1960，<br>你会梭哈半导体吗？</h2>
+      <p class="intro">你只有一间办公室和一台二手计算机。安排订单、研发与人才，让公司活过即将到来的行业寒冬。</p>
+      <div class="opening-objective" aria-label="本轮目标">
+        <span>首个目标</span>
+        <strong>在 1982 年科技寒冬中活下来</strong>
+        <small>四项公司能力任意一项归零，公司都会倒闭 · 进度自动保存</small>
+      </div>
+      <p class="intro-note">每次选择都会改变公司的能力与未来机会。影响方向会提前显示，具体结果在决定后揭晓。</p>
+      <button id="start-button" class="primary-button" type="button">成立公司</button>
+      <button id="continue-button" class="text-button hidden" type="button">继续上次进度</button>
+    </section>
+
+    <section id="game-screen" class="game-screen hidden" aria-live="polite">
+      <div class="year-context">
+        <div id="year-arrival" class="year-arrival hidden" aria-live="polite">
+          <span>新年度</span>
+          <strong id="arrival-year">1960</strong>
+          <small id="arrival-note">年度计划开始</small>
+          <div id="year-ledger" class="year-ledger hidden"></div>
+        </div>
+        <div class="timeline-row">
+          <span id="year" class="year">1960</span>
+          <span id="phase-label" class="phase-label">机器比办公室大</span>
+          <span id="progress" class="progress-label"></span>
+        </div>
+      </div>
+
+      <div id="decision-stage" class="decision-stage">
+        <article id="event-card" class="event-card">
+          <div class="document-header">
+            <p id="card-type" class="card-type"></p>
+            <span class="document-mark" aria-hidden="true">待决</span>
+          </div>
+          <h2 id="card-title"></h2>
+          <p id="card-body" class="card-body"></p>
+          <section id="inline-impact" class="inline-impact hidden">
+            <p class="impact-label">对公司的影响</p>
+            <h3 id="impact-headline"></h3>
+            <p id="impact-body"></p>
+            <div id="impact-settlement" class="settlement"></div>
+          </section>
+          <div class="signature-line" aria-hidden="true"><span>董事会批示</span></div>
+        </article>
+        <div id="choices" class="choices"></div>
+      </div>
+    </section>
+
+    <section id="opportunity-screen" class="opportunity-screen hidden" aria-live="polite">
+      <header class="opportunity-heading">
+        <div>
+          <p id="opportunity-kicker" class="eyebrow"></p>
+          <h2 id="opportunity-title"></h2>
+        </div>
+        <p id="opportunity-crisis" class="opportunity-crisis"></p>
+      </header>
+      <p id="opportunity-brief" class="opportunity-brief"></p>
+      <div id="opportunity-grid" class="opportunity-grid"></div>
+      <div class="opportunity-footer">
+        <p id="opportunity-count">选择 2 项，并决定处理顺序</p>
+        <button id="opportunity-confirm" class="primary-button" type="button" disabled>开始处理</button>
+      </div>
+    </section>
+
+    <section id="newspaper-screen" class="newspaper-screen hidden" aria-live="polite">
+      <article id="result-medium" class="newspaper">
+        <header class="newspaper-masthead">
+          <span id="paper-date"></span>
+          <strong id="medium-title">科技工商日报</strong>
+          <span id="medium-meta">每份 5 分</span>
+        </header>
+        <p id="paper-section" class="paper-section">商业 · 科技</p>
+        <h2 id="paper-headline"></h2>
+        <div class="rule"></div>
+        <p id="paper-body" class="paper-body"></p>
+        <div id="settlement" class="settlement"></div>
+        <div id="record-note" class="record-note hidden"></div>
+        <button id="next-hint" class="swipe-next-hint" type="button">继续：下一页</button>
+      </article>
+    </section>
+
+    <section id="ending-screen" class="ending-screen hidden" aria-live="polite"></section>
+  </main>
+
+  <div id="tutorial-overlay" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorial-copy" aria-hidden="true" tabindex="-1">
+    <div class="tutorial-message">
+      <p class="tutorial-kicker">操作提示</p>
+      <div id="tutorial-copy" class="tutorial-copy"></div>
+      <small>点击任意位置继续</small>
+    </div>
+  </div>
+
+  <dialog id="records-dialog" class="records-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">内部文件</p>
+        <h2>公司档案</h2>
+      </div>
+      <button id="close-records" class="icon-button" type="button" aria-label="关闭档案">关闭</button>
+    </div>
+    <div id="records-content"></div>
+  </dialog>
+
+  <script src="cards.config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
